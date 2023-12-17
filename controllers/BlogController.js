@@ -8,28 +8,75 @@ const jwtsecret = process.env.JWT_SECRET
 module.exports = {
     getBlogs: asyncHandler( async(req,res)=>{
         const q = req.query.cat
+        const search = req.query.search
+        const page = parseInt(req.query.page) || 1
+        console.log('page:',page)
+        const limit = 5
+        let totalCount
         let blogs
         if(q){
+            console.log('YEP')
+            console.log(q)
             blogs = await prisma.blog.findMany({
                 where:{
-                    category_id: {
-                        equals: parseInt(q)
-                    } ,
+                    // category_id: {
+                    //     equals: parseInt(q)
+                    // } ,
+                    category:{
+                        name: q
+                    },
                 },
                 include:{
                     category: true,
                     user: {
                         select:{
                             username: true,
-                            email: true
+                            email: true,
+                            avatar: true
                         }
                     }
                 },
                 orderBy: {
                     created_at: 'desc'
                 },
-                take: 10
+                skip: (page-1) * limit,
+                take: 5
             })
+            totalCount = await prisma.blog.count({
+                where:{
+                    category: {
+                        name: q
+                    }
+                }
+            })
+            console.log('BY CAT:',totalCount)
+            console.log('###',blogs.length)
+        }
+        else if(search) {
+            blogs = await prisma.blog.findMany({
+                where:{
+                    title:{
+                        contains: search
+                    }
+                },
+                include:{
+                    category: true,
+                    user: {
+                        select:{
+                            username: true,
+                            email: true,
+                            avatar: true
+                        }
+                    }
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
+                skip: (page-1) * limit,
+                take: 5
+            })
+            
+            totalCount = blogs.length
         }
         else {
          blogs = await prisma.blog.findMany({
@@ -46,13 +93,20 @@ module.exports = {
             orderBy: {
                 created_at: 'desc'
             },
-            take: 10
+            skip: (page-1) * limit,
+            take: 5
         })
+        totalCount = await prisma.blog.count()
     }
+    
+        const totalPages = Math.ceil(totalCount/limit)
+        // console.log('thispageblogs:',blogs.length)
+        console.log('totalblogs:',totalCount)
+        console.log('totalPages:',totalPages)
         if(!blogs){
             res.status(404).json({message: 'No blogs'})
         }
-        res.status(200).json({blogs})
+        res.status(200).json({blogs,totalPages})
     }),
 
     getBlog: asyncHandler( async(req,res)=>{
@@ -66,7 +120,8 @@ module.exports = {
                 user: {
                     select:{
                         username: true,
-                        email: true
+                        email: true,
+                        avatar: true
                     }
                 }
             },

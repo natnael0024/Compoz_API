@@ -83,7 +83,7 @@ module.exports = {
                     }, 
                     jwtsecret,
                     {
-                        expiresIn: '1h'
+                        expiresIn: '7d'
                     } )
                     delete user.password
                     res.status(200).json({user, token: token})
