@@ -11,7 +11,6 @@ module.exports = {
             const users = await prisma.user.findMany({
                 take: 10,
             })
-
             if(users.length < 1){
                 res.status(404).json({message: 'no users'})
             }

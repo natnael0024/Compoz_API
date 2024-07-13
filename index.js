@@ -7,6 +7,8 @@ const auth = require('./routes/auth')
 const cookiParser = require('cookie-parser')
 const categoryRoute = require('./routes/category')
 const userRoute = require('./routes/users')
+const swaggerConfig = require('./swagger')
+
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
@@ -26,3 +28,5 @@ app.use('/v1/blogs', blogRoute)
 app.use('/v1/auth', auth)
 app.use('/v1/categories',categoryRoute)
 app.use('/v1/users', userRoute)
+
+swaggerConfig(app)

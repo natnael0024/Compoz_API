@@ -30,6 +30,37 @@ const upload = multer({
     }
 })
 
+
+/**
+ * @swagger
+ * /api/blogs/create:
+ *   post:
+ *     summary: Create a new blog
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *               title:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 blog:
+ *                   $ref: '#/components/schemas/Blog'
+ */
 router.post('/create', upload.single('image'),  BlogController.createBlog)
 
 //update
