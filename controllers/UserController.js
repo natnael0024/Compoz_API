@@ -50,10 +50,11 @@ module.exports = {
         if(!token){
             return res.status(401).json({message: 'not authenticated'})
         }
+        console.log('@@@@@@@@@@@@@@w')
         jwt.verify(token, jwtsecret, async (err, userInfo)=>{
             if(err) return res.status(403).json({message: 'invalid token'})
             const {userId} = userInfo
-
+            
             //find user
             try{
                 let user = await prisma.user.findUnique({
@@ -63,8 +64,8 @@ module.exports = {
                 })
                 //check if the user exists
                 if(user){
-                       let avatarData = req.file? req.file.path: user.avatar
-                       console.log(req.body)
+                       let avatarData = req.publicURL? req.publicURL: user.avatar
+                       console.log(avatarData)
                        user = await prisma.user.update({
                             where: {id: userId},
                             data:{

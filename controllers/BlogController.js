@@ -56,7 +56,8 @@ module.exports = {
             blogs = await prisma.blog.findMany({
                 where:{
                     title:{
-                        contains: search
+                       contains :search,
+                       mode: 'insensitive' 
                     }
                 },
                 include:{
