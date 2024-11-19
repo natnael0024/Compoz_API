@@ -35,9 +35,7 @@ const upload = multer({
 
 router.put('/user/update',upload.single('avatar'),async (req,res,next)=>{
   try {
-    // if (!req.file) {
-    //   return res.status(400).json({ error: 'No file uploaded' });
-    // }
+    if (req.file) {
     const fileName = `${Date.now()}_${path.basename(req.file.originalname)}`;
     const filePath = `images/${fileName}`;
 
@@ -50,7 +48,7 @@ router.put('/user/update',upload.single('avatar'),async (req,res,next)=>{
       });
 
     if (error) {
-      throw error
+      console.log(error)
     }
 
     // Get public URL of the uploaded file
@@ -62,6 +60,7 @@ router.put('/user/update',upload.single('avatar'),async (req,res,next)=>{
     // Respond with the public URL of the uploaded image
     req.publicURL = data.publicUrl
     console.log('File uploaded and public URL set, passing to next middleware');
+  }
     next()
 
   } catch (err) {

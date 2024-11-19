@@ -5,6 +5,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "avatar" TEXT,
+    "occupation" TEXT,
     "bio" VARCHAR(100),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
@@ -16,7 +17,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Blog" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "content" VARCHAR(1000) NOT NULL,
+    "content" VARCHAR(50000) NOT NULL,
     "category_id" INTEGER NOT NULL,
     "image" VARCHAR(500),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

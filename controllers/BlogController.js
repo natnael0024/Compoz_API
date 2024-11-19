@@ -135,7 +135,7 @@ module.exports = {
 
     createBlog:  asyncHandler( async(req,res)=>{
        try{
-        let imageData = req.file?req.file.path: null
+        let imageData = req.publicURL?req.publicURL:null
             let fileSize = req.file? req.file.size:null
             if(fileSize > (0.5 * 1024 * 1024)){
                 return res.status(403).json({message: 'Image is to large ( > 500KB)'})
@@ -168,7 +168,7 @@ module.exports = {
                 res.status(404).json({message: 'blog not found'})
             }
 
-            let imageData = req.file? req.file.path: blog.image
+            let imageData = req.publicURL? req.publicURL: blog.image
             blog = await prisma.blog.update({
                 where: {id: blogId},
                 data: {
