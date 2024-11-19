@@ -136,8 +136,8 @@ module.exports = {
        try{
         let imageData = req.file?req.file.path: null
             let fileSize = req.file? req.file.size:null
-            if(fileSize > (0.4 * 1024 * 1024)){
-                return res.status(403).json({message: 'Image is to large ( > 400KB)'})
+            if(fileSize > (0.5 * 1024 * 1024)){
+                return res.status(403).json({message: 'Image is to large ( > 500KB)'})
             }
         const newBlog = await prisma.blog.create({
             data:{
@@ -148,7 +148,7 @@ module.exports = {
                 user_id: parseInt(req.body.user_id)
             }
         })
-        res.status(200).json({newBlog})
+        res.status(200).json({newBlog}) 
        }catch(error){
         console.log(error)
        }

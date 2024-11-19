@@ -9,6 +9,9 @@ const limit = 0.4* 1024 * 1024 //400kb
 //getall
 router.get('/', UserController.getAll )
 
+// get
+router.get('/:id', UserController.get)
+
 //update
 const upload = multer({
     storage: avatarsStorage,

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,7 +15,8 @@ model User {
   username String
   email String
   password String
-  avatar String?  
+  avatar String?
+  occupation String?
   bio String?  @db.VarChar(100)
   created_at DateTime @default(now())
   updated_at DateTime? @updatedAt
@@ -25,7 +26,7 @@ model User {
 model Blog {
   id Int @id @default(autoincrement())
   title String
-  content String @db.VarChar(1000)
+  content String @db.VarChar(50000)
   category Category @relation("BlogToCategory", fields: [category_id], references: [id])
   category_id Int 
   image String? @db.VarChar(500)

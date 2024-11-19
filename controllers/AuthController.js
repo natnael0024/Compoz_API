@@ -85,7 +85,15 @@ module.exports = {
                     {
                         expiresIn: '7d'
                     } )
+                    const blogCount = await prisma.blog.count({
+                        where: {
+                            user_id: user.id, // Filter by user ID
+                        },
+                    })
+                    user.blogCount = blogCount
+                    console.log(user)
                     delete user.password
+                    
                     res.status(200).json({user, token: token})
                 }
                 else{

@@ -28,6 +28,13 @@ module.exports = {
                 }
             })
 
+            const blogCount = await prisma.blog.count({
+                where: {
+                    user_id: user.id, // Filter by user ID
+                },
+            })
+            user.blogCount = String(blogCount)
+            console.log(user)
             if(!user){
                 res.status(404).json({message: 'no user with this ID'})
             }
@@ -57,13 +64,14 @@ module.exports = {
                 //check if the user exists
                 if(user){
                        let avatarData = req.file? req.file.path: user.avatar
-                       
+                       console.log(req.body)
                        user = await prisma.user.update({
                             where: {id: userId},
                             data:{
                                 username: req.body.username,
                                 bio: req.body.bio,
-                                avatar: avatarData
+                                occupation: req.body.occupation,
+                                avatar: avatarData 
                             }
                         })
                 }else{
