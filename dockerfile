@@ -16,7 +16,7 @@ COPY . .
 #RUN yarn install --frozen-lockfile
 
 RUN yarn prisma generate
-RUN yarn prisma migrate deploy --schema=./prisma/schema.prisma
+# RUN yarn prisma migrate deploy --schema=./prisma/schema.prisma
 
 EXPOSE 3000
 
