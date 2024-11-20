@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 #RUN yarn install --frozen-lockfile
-
+RUN npm i nodemon
 RUN yarn prisma generate
 # RUN yarn prisma migrate deploy --schema=./prisma/schema.prisma
 
