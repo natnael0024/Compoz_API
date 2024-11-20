@@ -20,4 +20,4 @@ RUN yarn prisma migrate deploy --schema=./prisma/schema.prisma
 
 EXPOSE 3000
 
-CMD ["npm", "run", "server"]
+CMD ["npm", "run", "serve"]
