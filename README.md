@@ -1,6 +1,6 @@
-## Compoz API:  Blogging Platform
+## chill&code API:  Blogging Platform
 
-Compoz API is a robust RESTful API built with Node.js and Express.js, designed to power the backend functionality of a blog platform. It provides a comprehensive set of endpoints for managing blog posts, categories, users, authentication, and file uploads, enabling you to build a dynamic and engaging blogging experience.
+chill&code API is a robust RESTful API built with Node.js and Express.js, designed to power the backend functionality of a blog platform. It provides a comprehensive set of endpoints for managing blog posts, categories, users, authentication, and file uploads, enabling you to build a dynamic and engaging blogging experience.
 
 ### Features
 
