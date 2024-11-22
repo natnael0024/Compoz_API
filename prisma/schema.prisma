@@ -34,6 +34,7 @@ model Blog {
   updated_at DateTime? @updatedAt 
   user  User  @relation("UserToBlog", fields: [user_id], references: [id], onDelete:Cascade)
   user_id  Int
+  views Int @default(0)
 }
 
 model Category {

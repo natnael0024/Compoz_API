@@ -130,6 +130,14 @@ module.exports = {
         if(!blog){
             res.status(404).json({message: 'blog not found'})
         }
+        await prisma.blog.update({
+            where: {id: blogId},
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        })
         res.status(200).json({blog})
     }),
 
