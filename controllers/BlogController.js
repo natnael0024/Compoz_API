@@ -225,5 +225,118 @@ module.exports = {
             res.status(500).json(error)
         }
         })
+    }),
+
+    likeBlog: asyncHandler(async (req, res) => {
+        const blogId = parseInt(req.params.id)
+        const token = req.headers.token
+
+        if (!token) {
+            return res.status(401).json({ message: 'not authenticated' })
+        }
+
+        jwt.verify(token, jwtsecret, async (err, userInfo) => {
+            if (err) return res.status(403).json({ message: 'invalid token' })
+
+            const { userId } = userInfo
+
+            // Check if the user has already liked this blog
+            const existingLike = await prisma.like.findUnique({
+                where: {
+                    user_id_blog_id: {
+                        user_id: userId,
+                        blog_id: blogId
+                    }
+                }
+            })
+
+            if (existingLike) {
+                // Remove the like
+                await prisma.like.delete({
+                    where: {
+                        id: existingLike.id
+                    }
+                })
+
+                // Decrement the blog's like count
+                await prisma.blog.update({
+                    where: { id: blogId },
+                    data: {
+                        likes_count: {
+                            decrement: 1
+                        }
+                    }
+                })
+                return res.status(200).json({ message: 'Blog unliked successfully' })
+            }
+
+            // Create a new like
+            await prisma.like.create({
+                data: {
+                    user_id: userId,
+                    blog_id: blogId
+                }
+            })
+
+            // Update the blog's like count
+            await prisma.blog.update({
+                where: { id: blogId },
+                data: {
+                    likes_count: {
+                        increment: 1
+                    }
+                }
+            })
+
+            res.status(200).json({ message: 'Blog liked successfully' })
+        })
+    }),
+    
+    unlikeBlog: asyncHandler(async (req, res) => {
+        const blogId = parseInt(req.params.id)
+        const token = req.headers.token
+
+        if (!token) {
+            return res.status(401).json({ message: 'not authenticated' })
+        }
+
+        jwt.verify(token, jwtsecret, async (err, userInfo) => {
+            if (err) return res.status(403).json({ message: 'invalid token' })
+
+            const { userId } = userInfo
+
+            // Check if the user has liked this blog
+            const existingLike = await prisma.like.findUnique({
+                where: {
+                    user_id_blog_id: {
+                        user_id: userId,
+                        blog_id: blogId
+                    }
+                }
+            })
+
+            if (!existingLike) {
+                return res.status(400).json({ message: 'You have not liked this blog' })
+            }
+
+            // Remove the like
+            await prisma.like.delete({
+                where: {
+                    id: existingLike.id
+                }
+            })
+
+            // Decrement the blog's like count
+            await prisma.blog.update({
+                where: { id: blogId },
+                data: {
+                    likes_count: {
+                        decrement: 1
+                    }
+                }
+            })
+
+            res.status(200).json({ message: 'Blog unliked successfully' })
+        })
     })
 }

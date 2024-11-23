@@ -140,4 +140,11 @@ router.put('/:id/update',upload.single('image'),async(req,res,next)=>{
 //delete
 router.delete('/:id/delete', BlogController.delete)
 
+// like
+router.post('/:id/like', BlogController.likeBlog)
+// unlike
+router.post('/:id/like', BlogController.unlikeBlog)
+
+
+
 module.exports = router

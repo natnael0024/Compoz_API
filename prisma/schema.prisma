@@ -21,6 +21,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime? @updatedAt
   blogs Blog[] @relation("UserToBlog") 
+  likes Like[]    @relation("UserToLike")
 }
 
 model Blog {
@@ -35,6 +36,8 @@ model Blog {
   user  User  @relation("UserToBlog", fields: [user_id], references: [id], onDelete:Cascade)
   user_id  Int
   views Int @default(0)
+  likes Like[]    @relation("BlogToLike")
+  likes_count Int @default(0)
 }
 
 model Category {
@@ -44,4 +47,16 @@ model Category {
   created_at DateTime @default(now())
   updated_at DateTime? @updatedAt
   blog Blog[] @relation("BlogToCategory")
+}
+
+model Like {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  blog_id    Int
+  created_at DateTime @default(now())
+  
+  user       User      @relation("UserToLike", fields: [user_id], references: [id])
+  blog       Blog      @relation("BlogToLike", fields: [blog_id], references: [id])
+
+  @@unique([user_id, blog_id])  // Composite unique constraint
 }
